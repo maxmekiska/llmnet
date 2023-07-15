@@ -36,7 +36,7 @@ def llmbot(model: str, temperature: float, set_prompt: str) -> str:
         stop=None,
         temperature=temperature,
     )
-    track.warning(f"Received response from OpenAI: {response}")
+    track.info(f"Received response from OpenAI: {response}")
 
     corrected_function = response["choices"][0]["message"]["content"].strip()
 

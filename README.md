@@ -7,5 +7,5 @@ This repo serves as a propsal to prevent Lost in the Middle phenomenon shown in 
 <br>
 
 <p align="center">
-  <img src="assets/Llmnet.png" alt="fukkatsu Logo" height="300">
+  <img src="assets/LlmNet.png" alt="llmnet architecture" height="300">
 </p>

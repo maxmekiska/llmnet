@@ -1,4 +1,5 @@
 import os
+from typing import List, Optional, Union
 
 import openai
 
@@ -24,16 +25,23 @@ def overwrite_openai_key(key: str):
         track.warning("OPENAI_API_KEY overwritten.")
 
 
-def llmbot(model: str, temperature: float, set_prompt: str) -> str:
+def llmbot(
+    model: str,
+    temperature: float,
+    set_prompt: str,
+    max_tokens: int = 2024,
+    n: int = 1,
+    stop: Optional[Union[str, List[str]]] = None,
+) -> str:
     track.info(f"Sending prompt to OpenAI: {set_prompt}")
     response = openai.ChatCompletion.create(
         model=model,
         messages=[
             {"role": "system", "content": set_prompt},
         ],
-        max_tokens=2024,
-        n=1,
-        stop=None,
+        max_tokens=max_tokens,
+        n=n,
+        stop=stop,
         temperature=temperature,
     )
     track.info(f"Received response from OpenAI: {response}")

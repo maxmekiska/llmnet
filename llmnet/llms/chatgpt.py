@@ -6,10 +6,10 @@ from llmnet.observer.tracker import track
 
 
 def set_openai_key():
-    track.warning("Setting OPENAI_API_KEY")
+    track.info("Setting OPENAI_API_KEY")
     try:
         openai.api_key = os.environ.get("OPENAI_API_KEY")
-        track.warning("OPENAI_API_KEY found in environment variables.")
+        track.info("OPENAI_API_KEY found in environment variables.")
     except Exception as e:
         track.warning(e)
         track.error("OPENAI_API_KEY not found in environment variables.")
@@ -25,7 +25,7 @@ def overwrite_openai_key(key: str):
 
 
 def llmbot(model: str, temperature: float, set_prompt: str) -> str:
-    track.warning(f"Sending prompt to OpenAI: {set_prompt}")
+    track.info(f"Sending prompt to OpenAI: {set_prompt}")
     response = openai.ChatCompletion.create(
         model=model,
         messages=[

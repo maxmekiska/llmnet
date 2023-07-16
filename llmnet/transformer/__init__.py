@@ -1,1 +1,1 @@
-from llmnet.transformer.pre import clean_split_text, combine_sentences
+from llmnet.transformer.pre import clean_split, combine_sentences

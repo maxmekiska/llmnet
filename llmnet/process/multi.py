@@ -5,9 +5,9 @@ from llmnet.observer.tracker import track
 
 
 def process_single_prompt(set_prompt: str, worker, args, kwargs) -> str:
-    track.warning(f"Processing text: {set_prompt}")
+    track.info(f"Processing text: {set_prompt}")
     result = worker(set_prompt=set_prompt, *args, **kwargs)
-    track.warning(f"Completed processing for text: {set_prompt}")
+    track.info(f"Completed processing for text: {set_prompt}")
     return result
 
 

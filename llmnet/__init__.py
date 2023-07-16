@@ -6,7 +6,7 @@ from typing import List
 from llmnet.llms.chatgpt import llmbot, set_openai_key
 from llmnet.observer.tracker import track
 from llmnet.process.multi import process_prompts
-from llmnet.transformer.pre import clean_split_text, combine_sentences
+from llmnet.transformer.pre import clean_split, combine_sentences
 
 LLMBOTS = {
     "llmbot": llmbot,
@@ -15,7 +15,12 @@ LLMBOTS = {
 
 class BotNetwork(ABC):
     @abstractmethod
-    def __init__(self, set_input: list = []):
+    def __init__(self, set_input: List[str] = []):
+        pass
+
+    @property
+    @abstractmethod
+    def get_worker_allocated(self) -> int:
         pass
 
     @property
@@ -53,9 +58,15 @@ class LlmNetwork(BotNetwork):
 
         self.set_input = set_input
 
+        self.worker_allocated = len(self.set_input)
+
         self.worker_objective = ""
         self.worker_answers = ""
         self.worker_consensus = ""
+
+    @property
+    def get_worker_allocated(self) -> int:
+        return self.worker_allocated
 
     @property
     def get_worker_objective(self) -> str:
@@ -99,22 +110,3 @@ class LlmNetwork(BotNetwork):
         self.worker_consensus = consensus
 
         return consensus
-
-
-if __name__ == "__main__":
-
-    example_prompts = [
-        # "Elephants live in the jungle.",
-        "There are 1111 countries in the world. Very big world indeed.",
-        "There are big countries and small countries.",
-    ]
-
-    ob = LlmNetwork(set_input=example_prompts)
-
-    ob.create_network(
-        objective="How many countries are there in the world?",
-        worker="llmbot",
-        model="gpt-3.5-turbo",
-        temperature=0.7,
-    )
-    print(ob.apply_consensus(worker="llmbot", model="gpt-3.5-turbo", temperature=0.7))

@@ -30,15 +30,41 @@ def combine_sentences(
     return combined_sentences
 
 
-def clean_split_text(text):
-    cleaned_text = re.sub(r"\s+", " ", text)
+def remove_space_before_split_operator(text: str) -> str:
+    result = re.sub(r"\s*([.!?;])", r"\1", text)
+    return result
 
-    cleaned_text = re.sub(r"([.,!?;])(?!\s)", r"\1 ", cleaned_text)
 
-    cleaned_text = cleaned_text.strip()
+def remove_whitespaces(text: str) -> str:
+    result = re.sub(r"\s+", " ", text)
+    return result
 
-    cleaned_text = cleaned_text.replace("\n", " ")
 
-    sentences = re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=[.!?;])\s", cleaned_text)
+def remove_space_after_split_operator(text: str) -> str:
+    result = re.sub(r"([.!?;])(?!\s)", r"\1 ", text)
+    return result
 
-    return sentences
+
+def strip_text(text: str) -> str:
+    result = text.strip()
+    return result
+
+
+def remove_line_breaks(text: str) -> str:
+    result = text.replace("\n", " ")
+    return result
+
+
+def split_text_after_split_operator(text: str) -> List[str]:
+    result = re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=[.!?;])\s", text)
+    return result
+
+
+def clean_split(text: str) -> List[str]:
+    step = remove_space_before_split_operator(text)
+    step = remove_whitespaces(step)
+    step = remove_space_after_split_operator(step)
+    step = strip_text(step)
+    step = remove_line_breaks(step)
+    result = split_text_after_split_operator(step)
+    return result

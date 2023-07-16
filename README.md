@@ -11,7 +11,7 @@ Llmnet aims to address the challenges of "Lost in the Middle: How Language Model
 <br>
 
 <p align="center">
-  <img src="assets/LlmNet.png" alt="llmnet architecture" height="700">
+  <img src="assets/LlmNet.png" alt="llmnet architecture" height="500">
 </p>
 
 ## Example

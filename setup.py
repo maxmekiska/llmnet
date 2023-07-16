@@ -9,7 +9,7 @@ setup(
     author="Maximilian Mekiska",
     author_email="maxmekiska@gmail.com",
     url="https://github.com/maxmekiska/llmnet",
-    description="A solution for the Lost in the Middle phenomenon.",
+    description="A package to optimize multi-document question answering via a divide and conquer approach.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     name="llmnet",

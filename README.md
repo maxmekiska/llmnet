@@ -22,6 +22,8 @@ The user needs to supply all documents as one concatenated string. Llmnet does n
 
 Llmnet currently supports LLm models from OpenAI and allows the user to define the model to be used for the LLM workers, as well as the model to be used for the consensus worker.
 
+### How to use Llmnet?
+
 ```python
 
 clean_and_split = clean_split(example_documents_string)

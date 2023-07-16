@@ -25,6 +25,8 @@ Llmnet currently supports LLm models from OpenAI and allows the user to define t
 ### How to use Llmnet?
 
 ```python
+from llmnet import LlmNetwork
+from llmnet.transformer import clean_split, combine_sentences
 
 clean_and_split = clean_split(example_documents_string)
 

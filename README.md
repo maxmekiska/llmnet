@@ -11,7 +11,7 @@ Llmnet aims to address the challenges of "Lost in the Middle: How Language Model
 <br>
 
 <p align="center">
-  <img src="assets/LlmNet.png" alt="llmnet architecture" height="500">
+  <img src="assets/llmnet.gif" alt="llmnet architecture" height="500">
 </p>
 
 ## Example
@@ -22,11 +22,15 @@ The user needs to supply all documents as one concatenated string. Llmnet does n
 
 Llmnet currently supports LLm models from OpenAI and allows the user to define the model to be used for the LLM workers, as well as the model to be used for the consensus worker.
 
+Please make sure to set an env variable called `OPENAI_API_KEY` to your OpenAi key.
+This can also be overwritten. For further information, please refer to the example in the below.
+
 ### How to use Llmnet?
 
 ```python
 from llmnet import LlmNetwork
 from llmnet.transformer import clean_split, combine_sentences
+from llmnet.llms.chatgpt import overwrite_openai_key # overwrite openai key
 
 clean_and_split = clean_split(example_documents_string)
 
@@ -39,6 +43,9 @@ prepared_text = combine_sentences(sentences = clean_and_split,
                                   min_sentences_count = 2
                                   )
 
+
+# if you want to overwrite the env variable OPENAI_API_KEY use:
+#overwrite_openai_key("YOUR OPEN AI KEY")
 
 ob = LlmNetwork(set_input=prepared_text)
 

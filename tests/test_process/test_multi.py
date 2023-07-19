@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 import pytest
 
 from llmnet.process.multi import process_prompts, process_single_prompt
@@ -19,4 +21,9 @@ def test_process_single_prompt():
 
 
 def test_process_prompts():
-    pass
+    args = ()
+    kwargs = {"param": "value"}
+
+    results = process_prompts(["prompt1", "prompt2"], mock_worker, *args, **kwargs)
+
+    assert results == ["Processed: prompt1", "Processed: prompt2"]

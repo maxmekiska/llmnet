@@ -56,6 +56,7 @@ print(f"Worker allocated: {ob.get_worker_allocated}\n")
 ob.create_network(
     objective="What is empiricism?",
     worker="llmbot",
+    max_concurrent_worker=2,
     model="gpt-3.5-turbo",
     temperature=0.7,
 )

@@ -11,8 +11,13 @@ def process_single_prompt(set_prompt: str, worker, args, kwargs) -> str:
     return result
 
 
-def process_prompts(set_prompts: List[str], worker, *args, **kwargs) -> List[str]:
-    with multiprocessing.Pool() as pool:
+def process_prompts(
+    set_prompts: List[str], worker, max_worker: int, *args, **kwargs
+) -> List[str]:
+    with multiprocessing.Pool(processes=max_worker) as pool:
+        track.info(
+            f"Processing {len(set_prompts)} prompts with {max_worker} concurrent workers"
+        )
         arg_tuples = [(prompt, worker, args, kwargs) for prompt in set_prompts]
         results = pool.starmap(process_single_prompt, arg_tuples)
 

@@ -19,7 +19,7 @@ class BotNetwork(ABC):
 
     @property
     @abstractmethod
-    def get_worker_allocated(self) -> int:
+    def get_worker_jobs(self) -> int:
         pass
 
     @property
@@ -58,15 +58,15 @@ class LlmNetwork(BotNetwork):
 
         self.set_input = set_input
 
-        self.worker_allocated = len(self.set_input)
+        self.worker_jobs = len(set_input)
 
         self.worker_objective = ""
         self.worker_answers = ""
         self.worker_consensus = ""
 
     @property
-    def get_worker_allocated(self) -> int:
-        return self.worker_allocated
+    def get_worker_jobs(self) -> int:
+        return self.worker_jobs
 
     @property
     def get_worker_objective(self) -> str:
@@ -85,7 +85,9 @@ class LlmNetwork(BotNetwork):
         answer = LLMBOTS[worker](*args, **kwargs)
         return answer
 
-    def create_network(self, objective: str, worker: str, *args, **kwargs) -> None:
+    def create_network(
+        self, objective: str, worker: str, max_concurrent_worker: int, *args, **kwargs
+    ) -> None:
         self.worker_objective = objective
 
         kwargs["set_prompts"] = [
@@ -95,7 +97,9 @@ class LlmNetwork(BotNetwork):
             for prompt in self.set_input
         ]
 
-        answers = process_prompts(worker=LLMBOTS[worker], *args, **kwargs)
+        answers = process_prompts(
+            worker=LLMBOTS[worker], max_worker=max_concurrent_worker, *args, **kwargs
+        )
         self.worker_answers = " ".join(answers)
 
     def apply_consensus(self, worker: str, *args, **kwargs) -> str:

@@ -46,6 +46,6 @@ def llmbot(
     )
     track.info(f"Received response from OpenAI: {response}")
 
-    corrected_function = response["choices"][0]["message"]["content"].strip()
+    answer = response["choices"][0]["message"]["content"].strip()
 
-    return corrected_function
+    return answer

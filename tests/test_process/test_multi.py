@@ -24,6 +24,8 @@ def test_process_prompts():
     args = ()
     kwargs = {"param": "value"}
 
-    results = process_prompts(["prompt1", "prompt2"], mock_worker, *args, **kwargs)
+    results = process_prompts(
+        ["prompt1", "prompt2"], mock_worker, max_worker=2, *args, **kwargs
+    )
 
     assert results == ["Processed: prompt1", "Processed: prompt2"]

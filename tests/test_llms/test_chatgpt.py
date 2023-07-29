@@ -7,7 +7,8 @@ from unittest.mock import patch
 import openai
 import pytest
 
-from llmnet.llms.chatgpt import llmbot, overwrite_openai_key, set_openai_key
+from llmnet.llms.chatgpt import (openaillmbot, overwrite_openai_key,
+                                 set_openai_key)
 from llmnet.observer.tracker import track
 
 
@@ -49,7 +50,7 @@ def test_overwrite_openai_key_error():
         overwrite_openai_key(23)
 
 
-def test_llmbot():
+def test_openaillmbot():
     model = "test_model"
     temperature = 0.5
     set_prompt = "test_prompt"
@@ -63,6 +64,8 @@ def test_llmbot():
             "choices": [{"message": {"content": "llmbot response"}}]
         }
 
-        answer = llmbot(model=model, temperature=temperature, set_prompt=set_prompt)
+        answer = openaillmbot(
+            model=model, temperature=temperature, set_prompt=set_prompt
+        )
 
         assert answer == expected_answer

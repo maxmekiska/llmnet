@@ -25,7 +25,7 @@ def overwrite_openai_key(key: str):
         track.warning("OPENAI_API_KEY overwritten.")
 
 
-def llmbot(
+def openaillmbot(
     model: str,
     temperature: float,
     set_prompt: str,

@@ -5,10 +5,10 @@ from typing import List
 def combine_sentences(
     sentences: List[str],
     token_word_ratio: float,
-    token_limit: int,
+    token_limit: float,
     min_sentences_count: int,
 ):
-    total_tokens = 0
+    total_tokens = 0.0
     combined_sentences = []
     current_sentence = ""
 
@@ -18,7 +18,7 @@ def combine_sentences(
         if len(current_sentence.split(".")) >= min_sentences_count:
             if total_tokens + tokens > token_limit:
                 combined_sentences.append(current_sentence.strip())
-                total_tokens = 0
+                total_tokens = 0.0
                 current_sentence = ""
 
         current_sentence += " " + sentence.strip()

@@ -1,19 +1,15 @@
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 from typing import List
 
 from llmnet.blueprints.botnet import BotNetwork
 from llmnet.blueprints.constants import LLMBOTS
-from llmnet.llms.chatgpt import set_openai_key
 from llmnet.observer.tracker import track
 from llmnet.process.multi import process_prompts
 
 
 class LlmNetwork(BotNetwork):
     def __init__(self, set_input: List[str] = []):
-
-        set_openai_key()
-
         self.set_input = set_input
 
         self.worker_jobs = len(set_input)
@@ -51,7 +47,7 @@ class LlmNetwork(BotNetwork):
         return prompt
 
     @staticmethod
-    def consensus_worker(worker, *args, **kwargs) -> str:
+    def consensus_worker(worker: str, *args, **kwargs) -> str:
         answer = LLMBOTS[worker](*args, **kwargs)
         return answer
 
@@ -68,7 +64,9 @@ class LlmNetwork(BotNetwork):
         ]
 
         answers = process_prompts(
-            worker=LLMBOTS[worker], max_worker=max_concurrent_worker, *args, **kwargs
+            **kwargs,
+            llmbot=LLMBOTS[worker],
+            max_concurrent_worker=max_concurrent_worker,
         )
         self.worker_answers = " ".join(answers)
 
@@ -86,7 +84,7 @@ class LlmNetwork(BotNetwork):
             track.info(f"Prompt provided: {set_prompt}")
             kwargs["set_prompt"] = set_prompt
 
-        consensus = LlmNetwork.consensus_worker(worker=worker, *args, **kwargs)
+        consensus = LlmNetwork.consensus_worker(worker, *args, **kwargs)
         self.worker_consensus = consensus
 
         return consensus

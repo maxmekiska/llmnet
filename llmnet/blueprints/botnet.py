@@ -36,7 +36,7 @@ class BotNetwork(ABC):
 
     @staticmethod
     @abstractmethod
-    def consensus_worker(cls, worker, *args, **kwargs) -> str:
+    def consensus_worker(worker, *args, **kwargs) -> str:
         pass
 
     @abstractmethod

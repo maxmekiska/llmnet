@@ -15,7 +15,7 @@ def googlellmbot(
     top_p: Optional[float] = None,
     top_k: Optional[int] = None,
 ):
-    track.warning(
+    track.info(
         f"API REQUEST to {model} - Temperature: {temperature} - Max Tokens: {max_output_tokens} - candidate_count: {candidate_count} - Stop: {stop_sequences}"
     )
     model_ = genai.GenerativeModel(model)
@@ -30,6 +30,7 @@ def googlellmbot(
             top_p=top_p,
         ),
     )
+    track.info(f"Received response from Google: {response.text}")
 
     final_resoponse = response.text
 

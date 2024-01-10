@@ -14,7 +14,9 @@ def openaillmbot(
     n: int = 1,
     stop: Optional[Union[str, List[str]]] = None,
 ) -> str:
-    track.info(f"Sending prompt to OpenAI: {set_prompt}")
+    track.info(
+        f"API REQUEST to {model} - Temperature: {temperature} - Max Tokens: {max_tokens}"
+    )
     response = openai.ChatCompletion.create(
         model=model,
         messages=[

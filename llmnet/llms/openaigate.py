@@ -7,10 +7,10 @@ from llmnet.observer.tracker import track
 
 
 def openaillmbot(
-    model: str,
-    temperature: float,
     set_prompt: str,
+    model: str = "gpt-3.5-turbo",
     max_tokens: int = 2024,
+    temperature: float = 0.1,
     n: int = 1,
     stop: Optional[Union[str, List[str]]] = None,
 ) -> str:

@@ -13,7 +13,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     name="llmnet",
-    version="0.0.2",
+    version="0.0.3",
     packages=find_packages(include=["llmnet", "llmnet.*"]),
     install_requires=[
         "openai >= 0.27.5, <= 0.28",

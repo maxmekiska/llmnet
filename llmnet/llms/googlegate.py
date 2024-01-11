@@ -8,13 +8,13 @@ from llmnet.observer.tracker import track
 def googlellmbot(
     set_prompt: str,
     model: str = "gemini-pro",
-    candidate_count: Optional[int] = 1,
-    stop_sequences: Optional[str] = None,
-    max_output_tokens: int = 1024,
+    max_output_tokens: int = 2024,
     temperature: float = 0.1,
     top_p: Optional[float] = None,
     top_k: Optional[int] = None,
-):
+    candidate_count: Optional[int] = 1,
+    stop_sequences: Optional[str] = None,
+) -> str:
     track.info(
         f"API REQUEST to {model} - Temperature: {temperature} - Max Tokens: {max_output_tokens} - candidate_count: {candidate_count} - Stop: {stop_sequences}"
     )
@@ -32,6 +32,6 @@ def googlellmbot(
     )
     track.info(f"Received response from Google: {response.text}")
 
-    final_resoponse = response.text
+    answer = response.text
 
-    return final_resoponse
+    return answer

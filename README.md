@@ -59,6 +59,17 @@ ob.create_network(
     temperature=0.7,
 )
 
+# optional: v0.0.3 offers randomllmbot which selects llmbots at random. random_conifguration will furthermore randomly assign hyperprameters to bots.
+
+ob.create_network(
+    objective="What is empiricism?",
+    worker="randomllmbot",
+    random_configuration = {"googlellmbot": {"model": ["gemini-pro"], "temperature": [0.2, 0.8]},
+                            "openaillmbot": {"model": ["gpt-3.5-turbo"], "temperature": [0.3, 0.5, 0.9]}
+                           }
+    max_concurrent_worker=2,
+)
+
 print(ob.apply_consensus(worker="openaillmbot", model="gpt-3.5-turbo", temperature=0.7))
 
 

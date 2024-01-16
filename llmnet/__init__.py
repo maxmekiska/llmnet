@@ -1,4 +1,4 @@
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 from typing import List
 
@@ -9,22 +9,9 @@ from llmnet.process.multi import process_prompts
 
 
 class LlmNetwork(BotNetwork):
-    def __init__(self, set_input: List[str] = []):
-        self.set_input = set_input
-
-        self.worker_jobs = len(set_input)
-
-        self.worker_objective = ""
-        self.worker_answers = ""
-        self.worker_consensus = ""
-
-    @property
-    def get_worker_jobs(self) -> int:
-        return self.worker_jobs
-
-    @property
-    def get_worker_objective(self) -> str:
-        return self.worker_objective
+    def __init__(self):
+        self.worker_answers: str = ""
+        self.worker_consensus: str = ""
 
     @property
     def get_worker_answers(self) -> str:
@@ -52,30 +39,42 @@ class LlmNetwork(BotNetwork):
         return answer
 
     def create_network(
-        self, objective: str, worker: str, max_concurrent_worker: int, *args, **kwargs
+        self,
+        instruct: List[tuple[str, str]],
+        worker: str,
+        max_concurrent_worker: int,
+        connect: str = "Base your answer strictly on the following context and infromation:",
+        **kwargs,
     ) -> None:
-        self.worker_objective = objective
+        prompts = []
+        for pair in instruct:
+            if pair[1] == "":
+                prompt = pair[0]
+            else:
+                prompt = pair[0] + " " + connect + " " + pair[1]
 
-        kwargs["set_prompts"] = [
-            objective
-            + " Base your answer strictly on the following information: "
-            + context
-            for context in self.set_input
-        ]
+            prompts.append(prompt)
+
+        kwargs["set_prompts"] = prompts
 
         answers = process_prompts(
             **kwargs,
             llmbot=LLMBOTS[worker],
             max_concurrent_worker=max_concurrent_worker,
         )
-        self.worker_answers = " ".join(answers)
+        self.worker_answers = ";\n".join(answers)
 
     def apply_consensus(
-        self, worker: str, set_prompt: str = "", *args, **kwargs
+        self,
+        worker: str,
+        set_prompt: str = "",
+        set_objective: str = "",
+        *args,
+        **kwargs,
     ) -> str:
         if set_prompt == "":
             kwargs["set_prompt"] = self.set_default_consensus_worker_prompt(
-                self.worker_objective, self.worker_answers
+                set_objective, self.worker_answers
             )
             track.info(
                 f"No prompt provided. Using default prompt: {kwargs['set_prompt']}"

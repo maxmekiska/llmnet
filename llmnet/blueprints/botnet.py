@@ -4,17 +4,7 @@ from typing import List
 
 class BotNetwork(ABC):
     @abstractmethod
-    def __init__(self, set_input: List[str] = []):
-        pass
-
-    @property
-    @abstractmethod
-    def get_worker_jobs(self) -> int:
-        pass
-
-    @property
-    @abstractmethod
-    def get_worker_objective(self) -> str:
+    def __init__(self):
         pass
 
     @property
@@ -40,7 +30,14 @@ class BotNetwork(ABC):
         pass
 
     @abstractmethod
-    def create_network(self, objective: str, worker: str, *args, **kwargs) -> None:
+    def create_network(
+        self,
+        instruct: List[tuple[str, str]],  # tuple: (objective, context)
+        worker: str,
+        max_concurrent_worker: int,
+        connect: str,
+        **kwargs
+    ) -> None:
         pass
 
     @abstractmethod

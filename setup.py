@@ -1,5 +1,3 @@
-import os
-
 from setuptools import find_packages, setup
 
 with open("README.md", encoding="utf8") as file:
@@ -13,7 +11,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     name="llmnet",
-    version="0.0.3",
+    version="0.0.4",
     packages=find_packages(include=["llmnet", "llmnet.*"]),
     install_requires=[
         "openai >= 0.27.5, <= 0.28",

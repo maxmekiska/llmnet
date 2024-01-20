@@ -1,4 +1,5 @@
-from typing import Optional
+import uuid
+from typing import Any, Dict, Optional
 
 import google.generativeai as genai
 
@@ -14,7 +15,7 @@ def googlellmbot(
     top_k: Optional[int] = None,
     candidate_count: Optional[int] = 1,
     stop_sequences: Optional[str] = None,
-) -> str:
+) -> Dict[str, Dict[str, str]]:
     track.info(
         f"API REQUEST to {model} - Temperature: {temperature} - Max Tokens: {max_output_tokens} - candidate_count: {candidate_count} - Stop: {stop_sequences}"
     )
@@ -34,4 +35,19 @@ def googlellmbot(
 
     answer = response.text
 
-    return answer
+    meta = {
+        "llmbot": "googlellmbot",
+        "model": model,
+        "id": uuid.uuid4().hex,
+        "prompt": set_prompt,
+        "max_tokens": max_output_tokens,
+        "temperature": temperature,
+        "candidate_count": candidate_count,
+        "stop": stop_sequences,
+        "top_p": top_p,
+        "top_k": top_k,
+    }
+
+    output = {"answer": answer, "meta": meta}
+
+    return output

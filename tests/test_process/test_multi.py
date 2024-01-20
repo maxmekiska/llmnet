@@ -1,12 +1,8 @@
-from unittest.mock import patch
-
-import pytest
-
 from llmnet.process.multi import process_prompts, process_single_prompt
 
 
 def mock_worker(set_prompt: str, *args, **kwargs) -> str:
-    return f"Processed: {set_prompt}"
+    return {"answer": f"Processed: {set_prompt}", "meta": "metadata dict"}
 
 
 def test_process_single_prompt():

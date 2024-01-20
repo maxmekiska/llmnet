@@ -36,7 +36,7 @@ class LlmNetwork(BotNetwork):
     @staticmethod
     def consensus_worker(worker: str, *args, **kwargs) -> str:
         answer = LLMBOTS[worker](*args, **kwargs)
-        return answer
+        return answer["answer"]
 
     def create_network(
         self,

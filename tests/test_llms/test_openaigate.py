@@ -20,4 +20,4 @@ def test_openaillmbot():
             model=model, temperature=temperature, set_prompt=set_prompt
         )
 
-        assert answer == expected_answer
+        assert answer["answer"] == expected_answer

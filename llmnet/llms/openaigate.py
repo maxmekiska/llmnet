@@ -1,5 +1,5 @@
-import os
-from typing import List, Optional, Union
+import uuid
+from typing import Any, Dict, List, Optional, Union
 
 import openai
 
@@ -13,7 +13,7 @@ def openaillmbot(
     temperature: float = 0.1,
     n: int = 1,
     stop: Optional[Union[str, List[str]]] = None,
-) -> str:
+) -> Dict[str, Dict[str, str]]:
     track.info(
         f"API REQUEST to {model} - Temperature: {temperature} - Max Tokens: {max_tokens}"
     )
@@ -31,4 +31,17 @@ def openaillmbot(
 
     answer = response["choices"][0]["message"]["content"].strip()
 
-    return answer
+    meta = {
+        "llmbot": "openaillmbot",
+        "model": model,
+        "id": uuid.uuid4().hex,
+        "prompt": set_prompt,
+        "max_tokens": max_tokens,
+        "temperature": temperature,
+        "n": n,
+        "stop": stop,
+    }
+
+    output = {"answer": answer, "meta": meta}
+
+    return output

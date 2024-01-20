@@ -53,4 +53,4 @@ def test_request_google_model(mock_generative_model, mock_track_info):
 
     mock_generative_model.assert_called_once_with(model)
 
-    assert result == "Test response"
+    assert result["answer"] == "Test response"

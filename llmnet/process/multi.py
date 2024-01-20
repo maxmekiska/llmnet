@@ -8,7 +8,7 @@ def process_single_prompt(set_prompt: str, llmbot: Callable, args, kwargs) -> st
     track.info(f"Processing text: {set_prompt}")
     result = llmbot(set_prompt=set_prompt, *args, **kwargs)
     track.info(f"Completed processing for text: {set_prompt}")
-    return result
+    return result["answer"]
 
 
 def process_prompts(

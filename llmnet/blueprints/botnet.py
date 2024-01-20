@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Any, Dict, List
 
 
 class BotNetwork(ABC):
@@ -26,7 +26,7 @@ class BotNetwork(ABC):
 
     @staticmethod
     @abstractmethod
-    def consensus_worker(worker, *args, **kwargs) -> str:
+    def consensus_worker(worker, *args, **kwargs) -> Dict[Any, Any]:
         pass
 
     @abstractmethod

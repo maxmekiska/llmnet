@@ -13,7 +13,7 @@ def test_process_single_prompt():
 
     result = process_single_prompt(set_prompt, mock_worker, args, kwargs)
 
-    assert result == expected_result
+    assert result["answer"] == expected_result
 
 
 def test_process_prompts():
@@ -24,4 +24,7 @@ def test_process_prompts():
         ["prompt1", "prompt2"], mock_worker, max_concurrent_worker=2, *args, **kwargs
     )
 
-    assert results == ["Processed: prompt1", "Processed: prompt2"]
+    assert results == [
+        {"answer": "Processed: prompt1", "meta": "metadata dict"},
+        {"answer": "Processed: prompt2", "meta": "metadata dict"},
+    ]

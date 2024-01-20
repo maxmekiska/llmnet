@@ -1,6 +1,6 @@
 __version__ = "0.0.4"
 
-from typing import List
+from typing import Any, Dict, List
 
 from llmnet.blueprints.botnet import BotNetwork
 from llmnet.blueprints.constants import LLMBOTS
@@ -12,6 +12,9 @@ class LlmNetwork(BotNetwork):
     def __init__(self):
         self.worker_answers: str = ""
         self.worker_consensus: str = ""
+
+        self.worker_answer_messages: List = []
+        self.worker_consensus_messages: List = []
 
     @property
     def get_worker_answers(self) -> str:
@@ -34,9 +37,9 @@ class LlmNetwork(BotNetwork):
         return prompt
 
     @staticmethod
-    def consensus_worker(worker: str, *args, **kwargs) -> str:
+    def consensus_worker(worker: str, *args, **kwargs) -> Dict[Any, Any]:
         answer = LLMBOTS[worker](*args, **kwargs)
-        return answer["answer"]
+        return answer
 
     def create_network(
         self,
@@ -62,7 +65,10 @@ class LlmNetwork(BotNetwork):
             llmbot=LLMBOTS[worker],
             max_concurrent_worker=max_concurrent_worker,
         )
-        self.worker_answers = ";\n".join(answers)
+        for llmanswer in answers:
+            self.worker_answers + llmanswer["answer"] + ";\n"
+
+        self.worker_answer_messages = answers
 
     def apply_consensus(
         self,
@@ -84,6 +90,7 @@ class LlmNetwork(BotNetwork):
             kwargs["set_prompt"] = set_prompt
 
         consensus = LlmNetwork.consensus_worker(worker, *args, **kwargs)
-        self.worker_consensus = consensus
+        self.worker_consensus = consensus["answer"]
+        self.worker_consensus_messages.append(consensus)
 
-        return consensus
+        return consensus["answer"]

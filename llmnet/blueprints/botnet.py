@@ -19,20 +19,13 @@ class BotNetwork(ABC):
 
     @staticmethod
     @abstractmethod
-    def set_default_consensus_worker_prompt(
-        worker_objective: str, worker_answers: str
-    ) -> str:
-        pass
-
-    @staticmethod
-    @abstractmethod
     def consensus_worker(worker, *args, **kwargs) -> Dict[Any, Any]:
         pass
 
     @abstractmethod
     def create_network(
         self,
-        instruct: List[tuple[str, str]],  # tuple: (objective, context)
+        instruct: List[Dict[str, str]],  # Dict: {"objective": , "context": }
         worker: str,
         max_concurrent_worker: int,
         connect: str,
@@ -41,5 +34,5 @@ class BotNetwork(ABC):
         pass
 
     @abstractmethod
-    def apply_consensus(self, worker: str, *args, **kwargs) -> str:
+    def apply_consensus(self, worker: str, set_prompt: str, *args, **kwargs) -> str:
         pass

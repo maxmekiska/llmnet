@@ -1,4 +1,4 @@
-__version__ = "0.0.4"
+__version__ = "0.1.0"
 
 from typing import Any, Dict, List
 
@@ -24,17 +24,13 @@ class LlmNetwork(BotNetwork):
     def get_worker_consensus(self) -> str:
         return self.worker_consensus
 
-    @staticmethod
-    def set_default_consensus_worker_prompt(
-        worker_objective: str, worker_answers: str
-    ) -> str:
-        prompt = (
-            f"You are the final evaluator in a network of large language models. "
-            f"Your task is to strictly use only the other models output and provide a final conclusion. "
-            f"The orignal request was: {worker_objective}. The other models concluded the following: "
-            f"{worker_answers}"
-        )
-        return prompt
+    @property
+    def get_worker_answer_messages(self) -> List:
+        return self.worker_answer_messages
+
+    @property
+    def get_worker_consensus_messages(self) -> List:
+        return self.worker_consensus_messages
 
     @staticmethod
     def consensus_worker(worker: str, *args, **kwargs) -> Dict[Any, Any]:
@@ -43,7 +39,7 @@ class LlmNetwork(BotNetwork):
 
     def create_network(
         self,
-        instruct: List[tuple[str, str]],
+        instruct: List[Dict[str, str]],
         worker: str,
         max_concurrent_worker: int,
         connect: str = "Base your answer strictly on the following context and infromation:",
@@ -51,10 +47,16 @@ class LlmNetwork(BotNetwork):
     ) -> None:
         prompts = []
         for pair in instruct:
-            if pair[1] == "":
-                prompt = pair[0]
+            if pair.get("context"):
+                prompt = (
+                    pair.get("objective", "No objective")
+                    + " "
+                    + connect
+                    + " "
+                    + pair.get("context", "No context")
+                )
             else:
-                prompt = pair[0] + " " + connect + " " + pair[1]
+                prompt = pair.get("objective", "no objective")
 
             prompts.append(prompt)
 
@@ -73,21 +75,11 @@ class LlmNetwork(BotNetwork):
     def apply_consensus(
         self,
         worker: str,
-        set_prompt: str = "",
-        set_objective: str = "",
+        set_prompt: str,
         *args,
         **kwargs,
     ) -> str:
-        if set_prompt == "":
-            kwargs["set_prompt"] = self.set_default_consensus_worker_prompt(
-                set_objective, self.worker_answers
-            )
-            track.info(
-                f"No prompt provided. Using default prompt: {kwargs['set_prompt']}"
-            )
-        else:
-            track.info(f"Prompt provided: {set_prompt}")
-            kwargs["set_prompt"] = set_prompt
+        kwargs["set_prompt"] = set_prompt
 
         consensus = LlmNetwork.consensus_worker(worker, *args, **kwargs)
         self.worker_consensus = consensus["answer"]

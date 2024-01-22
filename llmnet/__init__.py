@@ -4,7 +4,6 @@ from typing import Any, Dict, List
 
 from llmnet.blueprints.botnet import BotNetwork
 from llmnet.blueprints.constants import LLMBOTS
-from llmnet.observer.tracker import track
 from llmnet.process.multi import process_prompts
 
 

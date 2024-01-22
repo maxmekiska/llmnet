@@ -7,7 +7,7 @@ setup(
     author="Maximilian Mekiska",
     author_email="maxmekiska@gmail.com",
     url="https://github.com/maxmekiska/llmnet",
-    description="A package to optimize multi-document question answering via a divide and conquer approach.",
+    description="A package designed to harness the diversity of thought by combining multiple LLMs.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     name="llmnet",
@@ -23,6 +23,6 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
-    keywords=["machinelearning", "llm", "bots", "context", "optimization"],
+    keywords=["machinelearning", "llm", "bots", "network"],
     python_rquieres=">= 3.9.0, < 3.12.0",
 )

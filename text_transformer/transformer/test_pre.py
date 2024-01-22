@@ -1,6 +1,6 @@
 import pytest
 
-from llmnet.transformer.pre import (clean_split, combine_sentences,
+from .pre import (clean_split, combine_sentences,
                                     remove_line_breaks,
                                     remove_space_after_split_operator,
                                     remove_space_before_split_operator,

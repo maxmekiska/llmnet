@@ -21,3 +21,4 @@
 
 - package generalization
   - llmnet supports now use cases beside doucment question answering
+- removed transformer module

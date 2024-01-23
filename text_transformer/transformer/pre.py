@@ -10,18 +10,18 @@ def combine_sentences(
 ):
     total_tokens = 0.0
     combined_sentences = []
-    current_sentence = ""
+    current_sentence = ''
 
     for sentence in sentences:
         tokens = len(sentence.split()) / token_word_ratio  # Estimate number of tokens
 
-        if len(current_sentence.split(".")) >= min_sentences_count:
+        if len(current_sentence.split('.')) >= min_sentences_count:
             if total_tokens + tokens > token_limit:
                 combined_sentences.append(current_sentence.strip())
                 total_tokens = 0.0
-                current_sentence = ""
+                current_sentence = ''
 
-        current_sentence += " " + sentence.strip()
+        current_sentence += ' ' + sentence.strip()
         total_tokens += tokens
 
     if current_sentence.strip():
@@ -31,17 +31,17 @@ def combine_sentences(
 
 
 def remove_space_before_split_operator(text: str) -> str:
-    result = re.sub(r"\s*([.!?;])", r"\1", text)
+    result = re.sub(r'\s*([.!?;])', r'\1', text)
     return result
 
 
 def remove_whitespaces(text: str) -> str:
-    result = re.sub(r"\s+", " ", text)
+    result = re.sub(r'\s+', ' ', text)
     return result
 
 
 def remove_space_after_split_operator(text: str) -> str:
-    result = re.sub(r"([.!?;])(?!\s)", r"\1 ", text)
+    result = re.sub(r'([.!?;])(?!\s)', r'\1 ', text)
     return result
 
 
@@ -51,12 +51,12 @@ def strip_text(text: str) -> str:
 
 
 def remove_line_breaks(text: str) -> str:
-    result = text.replace("\n", " ")
+    result = text.replace('\n', ' ')
     return result
 
 
 def split_text_after_split_operator(text: str) -> List[str]:
-    result = re.split(r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=[.!?;])\s", text)
+    result = re.split(r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=[.!?;])\s', text)
     return result
 
 

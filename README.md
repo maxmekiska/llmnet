@@ -18,7 +18,7 @@ Llmnet aims to address the challenges of "Lost in the Middle: How Language Model
 
 ## Example
 
-### Prerequisite  
+### Prerequisite
 
 The user needs to supply all documents as one concatenated string. Llmnet does not focus on preprocessing at this point in time and only provides minimal preprocessing capabilities.
 

@@ -1,83 +1,134 @@
-# llmnet
+# `llmnet`
 
-This repo is inspired by the work: "Lost in the Middle: How Language Models Use Long Contexts" written by Nelson F. Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, Percy Liang.
+llmnet is a python library designed to facilitate collaborative work among LLMs on diverse tasks. Its primary goal is to encourage a diversity of thought across various LLM models.
 
-You can find the paper here: [Lost in the Middle](https://arxiv.org/abs/2307.03172)
+llmnet comprises two main components:
 
-## llmnet Objective
+1. LLM network workers
+2. Consensus worker
 
-Llmnet aims to address the challenges of "Lost in the Middle: How Language Models Use Long Contexts" scenarios in multi-document question answering tasks through a divide and conquer approach. Llmnet specifically focuses on the phenomenon of decreasing performance when large language models are provided with input context sequences longer than the training context window sizes. To achieve this, Llmnet divides the input context into batches that align with the training-time context window size of the LLM being used. For each batch, Llmnet creates separate LLM workers in parallel. These LLM workers receive the same question and provide answers based on their assigned input context batch. Finally, the answers from all the LLM workers are collected and sent to a final consensus worker, whose role is to synthesize the information and provide an answer to the question.
 
-## llmnet Architecture
-
-<br>
-
-<p align="center">
-  <img src="assets/llmnet.gif" alt="llmnet architecture" height="500">
-</p>
+The LLM network workers can independently and concurrently process tasks, while the consensus worker can access the various solutions and generate a final output. It's important to note that the consensus worker is optional and doesn't necessarily need to be employed.
 
 ## Example
 
 ### Prerequisite
 
-The user needs to supply all documents as one concatenated string. Llmnet does not focus on preprocessing at this point in time and only provides minimal preprocessing capabilities.
+llmnet currently supports LLM models from OpenAI and Google. The user can define the model to be used for the LLM workers, as well as the model to be used for the consensus worker.
 
-Llmnet currently supports LLM models from OpenAI and Google. The user can define the model to be used for the LLM workers, as well as the model to be used for the consensus worker.
-
-Please make sure to set env variables called `OPENAI_API_KEY`, `GOOGLE_API_KEY` to your OpenAi and google keys.
+Please make sure to set env variables called `OPENAI_API_KEY`, `GOOGLE_API_KEY` to your OpenAi and Google keys.
 
 ### How to use llmnet?
 
+#### llm worker
+
+You have currently three llm worker at your disposal:
+
+1. openaillmbot
+2. googlellmbot
+3. randomllmbot
+
+##### openaillmbot
+
+##### googlellmbot
+
+##### randomllmbot
+
+#### Simple independent tasks - no consensus
+
 ```python
 from llmnet import LlmNetwork
-from llmnet.transformer import clean_split, combine_sentences
-from llmnet.llms.chatgpt import overwrite_openai_key # overwrite openai key
-
-clean_and_split = clean_split(example_documents_string)
-
-# token word ration = Token / Word (estimate)
-# token limit = choose the training - time context window size
-# min_sentences_count = how many sentences should be at least in one batch
-prepared_text = combine_sentences(sentences = clean_and_split,
-                                  token_word_ratio = 0.75,
-                                  token_limit = 1012,
-                                  min_sentences_count = 2
-                                  )
 
 
-ob = LlmNetwork(set_input=prepared_text)
+instructions = []
 
 
-# check how many LLM workers will be created
-print(f"Worker allocated: {ob.get_worker_allocated}\n")
+instructions = [
+    {"objective": "how many countries are there?"},
+    {"objective": "what is AGI"},
+    {"objective": "What is the purpose of biological life?"}
+    ]
 
-ob.create_network(
-    objective="What is empiricism?",
-    worker="openaillmbot",
-    max_concurrent_worker=2,
-    model="gpt-3.5-turbo",
-    temperature=0.7,
-)
+net = LlmNetwork()
 
-# optional: v0.0.3 offers randomllmbot which selects llmbots at random. random_conifguration will furthermore randomly assign hyperprameters to bots.
-
-ob.create_network(
-    objective="What is empiricism?",
+net.create_network(
+    instruct=instructions,
     worker="randomllmbot",
-    random_configuration = {"googlellmbot": {"model": ["gemini-pro"], "temperature": [0.2, 0.8]},
-                            "openaillmbot": {"model": ["gpt-3.5-turbo"], "temperature": [0.3, 0.5, 0.9]}
-                           }
     max_concurrent_worker=2,
+    random_configuration={
+        "googlellmbot": {"model": ["gemini-pro"], "temperature": [0.12, 0.11]},
+        "openaillmbot": {
+            "model": ["gpt-3.5-turbo"],
+            "temperature": [0.11, 0.45, 1],
+        },
+    },
 )
 
-print(ob.apply_consensus(worker="openaillmbot", model="gpt-3.5-turbo", temperature=0.7))
+# collection of answers as a string
+net.get_worker_answers
 
-
-# Alternatively, you can customize the consensus worker prompt by setting the variable: set_prompt
-# you can furthermore access the answers from the other models and objective via the getter methods: get_worker_answers and get_worker_objectives
-print(ob.apply_consensus(worker="googlellmbot", model="gemini-pro", temperature=0.7, set_prompt= f"Summarize the following text: {ob.get_worker_answers}, make sure to obey this objective: {ob.get_worker_objectives}"))
+# collection of answers with metadata
+net.get_worker_answer_messages
 ```
 
-## Alternatives
+#### One task with same objective split between multiple workers - consensus
+
+```python
+from llmnet import LlmNetwork
+
+
+instructions = []
+
+
+instructions = [
+    {"objective": "What is empiricism?", "context": "Text Part One"},
+    {"objective": "What is empiricism?", "context": "Text Part Two"},
+    {"objective": "What is empiricism?", "context": "Text Part Three"}
+    ]
+
+net = LlmNetwork()
+
+net.create_network(
+    instruct=instructions,
+    worker="randomllmbot",
+    max_concurrent_worker=2,
+    random_configuration={
+        "googlellmbot": {"model": ["gemini-pro"], "temperature": [0.12, 0.11]},
+        "openaillmbot": {
+            "model": ["gpt-3.5-turbo"],
+            "temperature": [0.11, 0.45, 1],
+        },
+    },
+)
+
+# collection of answers as a string
+net.get_worker_answers
+
+# collection of answers with metadata
+net.get_worker_answer_messages
+
+# apply consensus
+
+net.apply_consensus(
+    worker="openaillmbot",
+    model="gpt-3.5-turbo",
+    temperature=0.7,
+    set_prompt=f"Answer this objective: What is empiricism? with the following text in just one sentences: {net.get_worker_answers}",
+)
+
+# get final consensus answer as a string
+net.get_worker_consensus
+
+# get answer with metadata
+net.get_worker_consensus_messages
+```
+
+#### Other example use cases
+
+- independent objectives, choose best solution via consensus
+- mixed objectives with and without context, with or without consensus
+- just experiment and let me know..
+
+## Appendix
 
 Please consider looking at alternative implementations such as Map reduce by LangChain: [LangChain MapReduce Documentation](https://python.langchain.com/docs/modules/chains/document/map_reduce)

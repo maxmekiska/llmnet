@@ -1,1 +1,2 @@
 openai == 0.27.5
+google-generativeai == 0.3.1

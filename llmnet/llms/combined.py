@@ -9,7 +9,7 @@ from .openaigate import openaillmbot
 
 
 @typing.no_type_check
-def randomllmbot(set_prompt: str, random_configuration: Dict) -> str:
+def randomllmbot(set_prompt: str, random_configuration: Dict = {}) -> str:
     model = random.choice([openaillmbot, googlellmbot])
 
     configuration = random_configuration[model.__name__]
@@ -25,7 +25,7 @@ def randomllmbot(set_prompt: str, random_configuration: Dict) -> str:
 
 
 @typing.no_type_check
-def randomopenaillmbot(set_prompt: str, random_configuration: Dict) -> str:
+def randomopenaillmbot(set_prompt: str, random_configuration: Dict = {}) -> str:
     chosen_configuration = {
         key: random.choice(value_list)
         for key, value_list in random_configuration.items()
@@ -37,7 +37,7 @@ def randomopenaillmbot(set_prompt: str, random_configuration: Dict) -> str:
 
 
 @typing.no_type_check
-def randomgooglellmbot(set_prompt: str, random_configuration: Dict) -> str:
+def randomgooglellmbot(set_prompt: str, random_configuration: Dict = {}) -> str:
     chosen_configuration = {
         key: random.choice(value_list)
         for key, value_list in random_configuration.items()

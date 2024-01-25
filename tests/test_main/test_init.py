@@ -20,12 +20,12 @@ def test_get_worker_consensus(llm_network_instance):
     assert llm_network_instance.get_worker_consensus == "Consensus Answer"
 
 
-def test_get_worker_answer_messages(llm_network_instance):
-    llm_network_instance.worker_answer_messages = [
+def test_get_worker_answers_messages(llm_network_instance):
+    llm_network_instance.worker_answers_messages = [
         {"answer": "Answer 1"},
         {"answer": "Answer 2"},
     ]
-    assert llm_network_instance.get_worker_answer_messages == [
+    assert llm_network_instance.get_worker_answers_messages == [
         {"answer": "Answer 1"},
         {"answer": "Answer 2"},
     ]

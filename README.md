@@ -32,7 +32,7 @@ You have currently three llm worker at your disposal:
 
 Interface with OpenAi models.
 
-parameters:
+optional parameters:
 
 ```
 model         (str) = 'gpt-3.5-turbo'
@@ -46,7 +46,7 @@ stop          (Union[str, List[str]]) = None
 
 Interface with Google models.
 
-parameters:
+optional parameters:
 
 ```
 model               (str) = 'gemini-pro'
@@ -60,9 +60,9 @@ stop_sequences      (str) = None
 
 ##### `randomllmbot`
 
-Select randomly between all available llmbots and parameter specified.
+Select randomly between all available llmworkers and parameter specified.
 
-parameters:
+optional parameters:
 
 ```
 random_configuration  (Dict) = {}
@@ -74,19 +74,79 @@ example dict:
 {
     "<worker1>":
     {
-        "<argument1>": [<possible_arguments],
-        "<argument2>": [<possible_arguments],
+        "<parameter1>": [<possible_arguments>],
+        "<parameter2>": [<possible_arguments>],
         ...
     },
     "<worker2>":
     {
-        "<argument1>": [<possible_arguments],
-        "<argument2>": [<possible_arguments]
+        "<parameter1>": [<possible_arguments>],
+        "<parameter2>": [<possible_arguments>]
         ...
     }
     ...
 }
 ```
+
+##### `randomopenaillmbot`
+
+optional parameters - if not provided, defaults to `openaillmbot` default values:
+
+```
+random_configuration  (Dict) = {}
+```
+
+example dict:
+
+```
+{
+    "<parameter1>": [<possible_arguments>],
+    "<parameter2>": [<possible_arguments>],
+    ...
+}
+```
+
+
+##### `randomgooglellmbot`
+
+optional parameters - if not provided, defaults to `googlellmbot` default values:
+
+```
+random_configuration  (Dict) = {}
+```
+
+example dict:
+
+```
+{
+    "<parameter1>": [<possible_arguments],
+    "<parameter2>": [<possible_arguments],
+    ...
+}
+```
+#### `create_network`
+
+- creates llmworker network
+- expects:
+  - instruct: List[Dict[str, str]]
+    - structure: `[{"objective": xxx, "context": ooo}..]`, the context key is is optional
+  - worker: select any worker from the above
+  - max_concurrent_worker: how many API calls are allowed in parallel
+  - kwargs: any configuration for the worker selected
+  - access results via getter methods:
+    - get_worker_answers: collection of answers combined in one string
+    - get_worker_answers_messages: collection of answers with metadata
+
+#### `apply_consensus`
+
+- creates consensus worker
+- expects:
+  - worker: select any worker from the above
+  - kwargs: any configuration for the worker selected
+  - set_prompt: prompt to build consensus
+    - access results via getter methods:
+      - get_worker_consensus: consensus result as string
+      - get_worker_consensus_messages: consensus result with metadata
 
 #### Simple independent tasks - no consensus
 

@@ -22,3 +22,27 @@ def randomllmbot(set_prompt: str, random_configuration: Dict) -> str:
 
     answer = model(set_prompt=set_prompt, **chosen_configuration)
     return answer
+
+
+@typing.no_type_check
+def randomopenaillmbot(set_prompt: str, random_configuration: Dict) -> str:
+    chosen_configuration = {
+        key: random.choice(value_list)
+        for key, value_list in random_configuration.items()
+    }
+    track.info(f"Chosen configuration: {chosen_configuration}")
+
+    answer = openaillmbot(set_prompt=set_prompt, **chosen_configuration)
+    return answer
+
+
+@typing.no_type_check
+def randomgooglellmbot(set_prompt: str, random_configuration: Dict) -> str:
+    chosen_configuration = {
+        key: random.choice(value_list)
+        for key, value_list in random_configuration.items()
+    }
+    track.info(f"Chosen configuration: {chosen_configuration}")
+
+    answer = googlellmbot(set_prompt=set_prompt, **chosen_configuration)
+    return answer

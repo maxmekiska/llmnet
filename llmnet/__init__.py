@@ -12,7 +12,7 @@ class LlmNetwork(BotNetwork):
         self.worker_answers: str = ""
         self.worker_consensus: str = ""
 
-        self.worker_answer_messages: List = []
+        self.worker_answers_messages: List = []
         self.worker_consensus_messages: List = []
 
     @property
@@ -24,8 +24,8 @@ class LlmNetwork(BotNetwork):
         return self.worker_consensus
 
     @property
-    def get_worker_answer_messages(self) -> List:
-        return self.worker_answer_messages
+    def get_worker_answers_messages(self) -> List:
+        return self.worker_answers_messages
 
     @property
     def get_worker_consensus_messages(self) -> List:

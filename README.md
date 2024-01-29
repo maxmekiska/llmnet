@@ -1,6 +1,6 @@
 # `llmnet`
 
-llmnet is a python library designed to facilitate collaborative work among LLMs on diverse tasks. Its primary goal is to encourage a diversity of thought across various LLM models.
+llmnet is a library designed to facilitate collaborative work among LLMs on diverse tasks. Its primary goal is to encourage a diversity of thought across various LLM models.
 
 llmnet comprises two main components:
 
@@ -27,6 +27,8 @@ You have currently three llm worker at your disposal:
 1. openaillmbot
 2. googlellmbot
 3. randomllmbot
+4. randomopenaillmbot
+5. randomgooglellmbot
 
 ##### `openaillmbot`
 
@@ -90,6 +92,8 @@ example dict:
 
 ##### `randomopenaillmbot`
 
+Select randomly between all configurations possible for OpenAi based llms.
+
 optional parameters - if not provided, defaults to `openaillmbot` default values:
 
 ```
@@ -108,6 +112,8 @@ example dict:
 
 
 ##### `randomgooglellmbot`
+
+Select randomly between all configurations possible for Google based llms.
 
 optional parameters - if not provided, defaults to `googlellmbot` default values:
 
@@ -246,4 +252,4 @@ net.get_worker_consensus_messages
 
 ## Appendix
 
-Please consider looking at alternative implementations such as Map reduce by LangChain: [LangChain MapReduce Documentation](https://python.langchain.com/docs/modules/chains/document/map_reduce)
+Map reduce by LangChain: [LangChain MapReduce Documentation](https://python.langchain.com/docs/modules/chains/document/map_reduce)

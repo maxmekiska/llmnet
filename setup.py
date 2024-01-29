@@ -7,7 +7,7 @@ setup(
     author='Maximilian Mekiska',
     author_email='maxmekiska@gmail.com',
     url='https://github.com/maxmekiska/llmnet',
-    description='A package designed to harness the diversity of thought by combining multiple LLMs.',
+    description='A library designed to harness the diversity of thought by combining multiple LLMs.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     name='llmnet',

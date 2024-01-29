@@ -20,5 +20,5 @@
 ### 0.1.0
 
 - package generalization
-  - llmnet supports now use cases beside doucment question answering
+  - llmnet supports now use cases besides document question answering
 - removed transformer module

@@ -58,7 +58,7 @@ def test_create_network(llm_network_instance):
             connect="Base your answer strictly on the following context and information:",
         )
 
-        assert llm_network_instance.worker_answer_messages == [
+        assert llm_network_instance.worker_answers_messages == [
             {"answer": "Mocked Answer"}
         ]
 

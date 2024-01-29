@@ -41,18 +41,18 @@ class LlmNetwork(BotNetwork):
         instruct: List[Dict[str, str]],
         worker: str,
         max_concurrent_worker: int,
-        connect: str = "Base your answer strictly on the following context and infromation:",
+        connect: str = "Base your answer strictly on the following context and information:",
         **kwargs,
     ) -> None:
         prompts = []
         for pair in instruct:
             if pair.get("context"):
                 prompt = (
-                    pair.get("objective", "No objective")
+                    pair.get("objective", "no objective")
                     + " "
                     + connect
                     + " "
-                    + pair.get("context", "No context")
+                    + pair.get("context", "no context")
                 )
             else:
                 prompt = pair.get("objective", "no objective")
@@ -67,9 +67,8 @@ class LlmNetwork(BotNetwork):
             max_concurrent_worker=max_concurrent_worker,
         )
         for llmanswer in answers:
-            self.worker_answers + llmanswer["answer"] + ";\n"
-
-        self.worker_answer_messages = answers
+            self.worker_answers += llmanswer["answer"] + ";\n"
+            self.worker_answers_messages = answers
 
     def apply_consensus(
         self,

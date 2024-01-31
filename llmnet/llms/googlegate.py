@@ -1,5 +1,5 @@
 import uuid
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 
 import google.generativeai as genai
 
@@ -16,25 +16,6 @@ def googlellmbot(
     candidate_count: Optional[int] = 1,
     stop_sequences: Optional[str] = None,
 ) -> Dict[str, Dict[str, str]]:
-    track.info(
-        f"API REQUEST to {model} - Temperature: {temperature} - Max Tokens: {max_output_tokens} - candidate_count: {candidate_count} - Stop: {stop_sequences}"
-    )
-    model_ = genai.GenerativeModel(model)
-    response = model_.generate_content(
-        set_prompt,
-        generation_config=genai.types.GenerationConfig(
-            candidate_count=candidate_count,
-            stop_sequences=stop_sequences,
-            max_output_tokens=max_output_tokens,
-            temperature=temperature,
-            top_k=top_k,
-            top_p=top_p,
-        ),
-    )
-    track.info(f"Received response from Google: {response.text}")
-
-    answer = response.text
-
     meta = {
         "llmbot": "googlellmbot",
         "model": model,
@@ -47,7 +28,33 @@ def googlellmbot(
         "top_p": top_p,
         "top_k": top_k,
     }
+    try:
+        track.info(
+            f"API REQUEST to {model} - Temperature: {temperature} - Max Tokens: {max_output_tokens} - candidate_count: {candidate_count} - Stop: {stop_sequences}"
+        )
+        model_ = genai.GenerativeModel(model)
+        response = model_.generate_content(
+            set_prompt,
+            generation_config=genai.types.GenerationConfig(
+                candidate_count=candidate_count,
+                stop_sequences=stop_sequences,
+                max_output_tokens=max_output_tokens,
+                temperature=temperature,
+                top_k=top_k,
+                top_p=top_p,
+            ),
+        )
+        track.info(f"Received response from Google: {response.text}")
 
-    output = {"answer": answer, "meta": meta}
+        answer = response.text
 
-    return output
+        output = {"answer": answer, "meta": meta}
+
+        return output
+    except Exception as e:
+        track.error(f"Error in Google request: {e}")
+
+        error_message = f"Google request failed. Error: {str(e)}"
+
+        output = {"answer": error_message, "meta": meta}
+        return output

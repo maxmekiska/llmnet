@@ -54,3 +54,17 @@ def test_request_google_model(mock_generative_model, mock_track_info):
     mock_generative_model.assert_called_once_with(model)
 
     assert result["answer"] == "Test response"
+
+
+def test_google_model_error(mock_generative_model):
+    model = "test_model"
+    temperature = 0.5
+    set_prompt = "test_prompt"
+
+    mock_generative_model.side_effect = Exception("Test error")
+
+    error_answer = googlellmbot(
+        model=model, temperature=temperature, set_prompt=set_prompt
+    )
+
+    assert error_answer["answer"] == "Google request failed. Error: Test error"

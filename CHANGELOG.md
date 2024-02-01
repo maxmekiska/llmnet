@@ -22,3 +22,9 @@
 - package generalization
   - llmnet supports now use cases besides document question answering
 - removed transformer module
+
+### 0.1.1
+
+- added API error handling
+  - google api
+  - openai api

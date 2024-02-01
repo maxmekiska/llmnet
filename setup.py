@@ -11,7 +11,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     name='llmnet',
-    version='0.1.0',
+    version='0.1.1',
     packages=find_packages(include=['llmnet', 'llmnet.*']),
     install_requires=[
         'openai >= 0.27.5, <= 0.28',
